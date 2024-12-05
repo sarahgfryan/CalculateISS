@@ -13,9 +13,9 @@ try:
     iss_table = iss_table.drop(columns=['ldh', 'alb', 'b2m', 't(4;14)', 't(14;16)', 'gain1q', 'del17p'])
 
     # Change numbers for ISS, R-ISS, R2-ISS into Roman numeral strings, if no value present change to NaN
-    iss_table['ISS'] = iss_table['ISS'].apply(lambda x: 'I' if x == 1 else ('II' if x == 2 else ('III' if x == 3 else None)))
-    iss_table['R-ISS'] = iss_table['R-ISS'].apply(lambda x: 'I' if x == 1 else ('II' if x == 2 else ('III' if x == 3 else None)))
-    iss_table['R2-ISS'] = iss_table['R2-ISS'].apply(lambda x: 'I' if x == 1 else ('II' if x == 2 else ('III' if x == 3 else ('IV' if x == 4 else None))))
+ #   iss_table['ISS'] = iss_table['ISS'].apply(lambda x: 'I' if x == 1 else ('II' if x == 2 else ('III' if x == 3 else None)))
+ #   iss_table['R-ISS'] = iss_table['R-ISS'].apply(lambda x: 'I' if x == 1 else ('II' if x == 2 else ('III' if x == 3 else None)))
+ #   iss_table['R2-ISS'] = iss_table['R2-ISS'].apply(lambda x: 'I' if x == 1 else ('II' if x == 2 else ('III' if x == 3 else ('IV' if x == 4 else None))))
 
     # Rename R-ISS and R2-ISS to RISS and R2ISS respectively
     iss_table.rename(columns={'R-ISS': 'RISS', 'R2-ISS': 'R2ISS'}, inplace=True)
@@ -29,9 +29,6 @@ try:
     survival_data = survival_data[surv_col]
     survival_data.columns = ['Patient_ID','death','os_time','progression','pfs_time']
 
-    # Remove _ from the patient IDs to match ISS table
-    survival_data['Patient_ID'] = survival_data['Patient_ID'].apply(lambda x: re.sub(r'(MMRF)_(\d+)', r'\1\2', x))
-    
     # Merge the survival data with the ISS table
     merged_data = pd.merge(iss_table, survival_data, on='Patient_ID', how='left')
 
